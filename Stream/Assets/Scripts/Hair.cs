@@ -26,6 +26,9 @@ public class Hair : MonoBehaviour {
 	}
 
 	void OnDisable() {
+		if (!Application.isPlaying)
+			return;
+
 		DestroyObject(_lineMesh);
 	}
 	
