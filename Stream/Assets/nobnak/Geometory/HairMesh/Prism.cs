@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 namespace nobnak.Geometory.HairMesh {
 
@@ -12,18 +14,13 @@ namespace nobnak.Geometory.HairMesh {
 		public Mesh layerMesh;
 		public bool drawCorners;
 
+		#if UNITY_EDITOR
 		void OnEnable() {
-	#if UNITY_EDITOR
 			SceneView.onSceneGUIDelegate += OnSceneGUI;
-	#endif
 		}
-
 		void OnDisable() {
-	#if UNITY_EDITOR
 			SceneView.onSceneGUIDelegate -= OnSceneGUI;
-	#endif
 		}
-		
 		void OnSceneGUI(SceneView sceneView) {
 			if (layerMesh == null)
 				return;
@@ -58,6 +55,12 @@ namespace nobnak.Geometory.HairMesh {
 				}
 			}
 		}
+		public void DrawSplineInScene (Spline spl) {
+			var dt = 1f / resolution;
+			var vertices = spl.Discretize(resolution);
+			Handles.DrawPolyLine(vertices);
+		}
+		#endif
 
 		public Spline GetSplineInWorld(Vector3 p) {
 			var spline = new Spline();
@@ -79,11 +82,6 @@ namespace nobnak.Geometory.HairMesh {
 			return spline;
 		}
 
-		public void DrawSplineInScene (Spline spl) {
-			var dt = 1f / resolution;
-			var vertices = spl.Discretize(resolution);
-			Handles.DrawPolyLine(vertices);
-		}
 	}
 
 }
